@@ -108,7 +108,7 @@ public class CadastroForm extends AppCompatActivity {
                     u.setId(auth.getUid());
                     u.setNome(nome);
                     u.setStatus(0);
-                    u.setTempo(" ");
+                    u.setLimpeza(0);
                     u.salvar();
 
                     Intent intent = new Intent(getApplicationContext(), FormLogin.class);
@@ -143,8 +143,6 @@ public class CadastroForm extends AppCompatActivity {
         senha_cadastro = findViewById(R.id.senha_cadastro);
         cadastro_button = findViewById(R.id.cadastro_button);
         voltar = findViewById(R.id.volta);
-
         txt_voltar = findViewById(R.id.txt_voltar);
-
     }
 }

@@ -8,15 +8,15 @@ public class Usuario {
     String id;
     String nome;
     Integer status;
-    String tempo;
+    Integer limpeza;
 
     public Usuario() {}
 
-    public Usuario(String id, String nome, Integer status, String tempo) {
+    public Usuario(String id, String nome, Integer status, Integer limpeza) {
         this.id = id;
         this.nome = nome;
         this.status = status;
-        this.tempo = tempo;
+        this.limpeza = limpeza;
     }
 
     public String getId() {
@@ -43,12 +43,12 @@ public class Usuario {
         this.status = status;
     }
 
-    public String getTempo() {
-        return tempo;
+    public Integer getLimpeza() {
+        return limpeza;
     }
 
-    public void setTempo(String tempo) {
-        this.tempo = tempo;
+    public void setLimpeza(Integer limpeza) {
+        this.limpeza = limpeza;
     }
 
     public void salvar(){

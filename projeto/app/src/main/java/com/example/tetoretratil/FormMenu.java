@@ -32,15 +32,13 @@ import java.util.Map;
 
 public class FormMenu extends AppCompatActivity {
 
-    private ImageView abrir_button, fechar_button, temporizador_button;
+    private ImageView abrir_button, fechar_button, temporizador_button, limpar_button;
 
-    private TextView abrir, fechar, temporizador;
-
-//    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private TextView abrir, fechar, temporizador, limpar;
 
     String usuarioId;
 
-//    DatabaseReference referencia = FirebaseDatabase.getInstance().getReference();
+    Integer limpeza = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +47,19 @@ public class FormMenu extends AppCompatActivity {
 
         getSupportActionBar().hide();
         iniciarComponent();
+
+        limpar_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iniciarLimpeza();
+            }
+        });
+        limpar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iniciarLimpeza();
+            }
+        });
 
         temporizador_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,31 +103,6 @@ public class FormMenu extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        usuarioId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//
-//        DatabaseReference teste = FirebaseDatabase.getInstance().getReference("nome");
-//
-//        DatabaseReference reference = teste.child(usuarioId);
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    String data = snapshot.child("nome").getValue().toString();
-//                    nome.setText(data);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.d("db_error", "Erro ao exibir nome");
-//            }
-//        });
-//    }
-
     private void abrirTeto(){
         HashMap<String,Object> usuario = new HashMap();
         usuario.put("status",1);
@@ -159,6 +145,50 @@ public class FormMenu extends AppCompatActivity {
         });
     }
 
+    private void iniciarLimpeza(){
+        if(limpeza == 0) {
+            HashMap<String,Object> usuario = new HashMap();
+            usuario.put("limpeza",1);
+
+            usuarioId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            DatabaseReference teste = FirebaseDatabase.getInstance().getReference("usuarios");
+
+            DatabaseReference reference = teste.child(usuarioId);
+            reference.updateChildren(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d("db_error", "Limpeza, sucesso!");
+                        limpeza = 1;
+                    } else {
+                        Log.d("db_error", "Erro ao realizar limpeza");
+                    }
+                }
+            });
+        }else {
+            HashMap<String,Object> usuario = new HashMap();
+            usuario.put("limpeza",0);
+
+            usuarioId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            DatabaseReference teste = FirebaseDatabase.getInstance().getReference("usuarios");
+
+            DatabaseReference reference = teste.child(usuarioId);
+            reference.updateChildren(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d("db_error", "Limpeza, sucesso!");
+                        limpeza = 0;
+                    } else {
+                        Log.d("db_error", "Erro ao realizar limpeza");
+                    }
+                }
+            });
+        }
+    }
+
     private void iniciarComponent() {
         abrir_button = findViewById(R.id.abrir_button);
         abrir = findViewById(R.id.abrir);
@@ -168,5 +198,8 @@ public class FormMenu extends AppCompatActivity {
 
         temporizador_button  = findViewById(R.id.temporizador_button);
         temporizador = findViewById(R.id.temporizador);
+
+        limpar_button  = findViewById(R.id.limpar_button);
+        limpar = findViewById(R.id.limpar);
     }
 }
